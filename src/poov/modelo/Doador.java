@@ -8,7 +8,9 @@ public class Doador {
     private boolean tipoERhCorretos = false;
     private TipoSanguineo tipoSanguineo;
     private RH Rh;
-    private Situacao situacao;
+    private Situacao situacao = Situacao.ATIVO;
+
+    public Doador() {}
 
     public Doador(long codigo, String nome, String cpf, String contato, TipoSanguineo tipoSanguineo, RH rh) {
         this.codigo = codigo;
@@ -61,6 +63,14 @@ public class Doador {
     public void setSituacao(Situacao situacao) {
         this.situacao = situacao;
     }
+
+    public boolean isTipoERhCorretos() {
+        return tipoERhCorretos;
+    }
+
+    public void setTipoERhCorretos(boolean tipoERhCorretos) {
+        this.tipoERhCorretos = tipoERhCorretos;
+    }    
     
     @Override
     public String toString() {

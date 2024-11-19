@@ -6,11 +6,11 @@ import java.sql.SQLException;
 public class DAOFactory {
      private Connection conexao = null;
 
-    public DoacaoDAO criarDoacaoDAO() {
+    public DoadorDAO criarDoadorDAO() {
         if (conexao == null) {
             throw new IllegalStateException("Abra uma conexão antes de criar um DAO.");
         } else {
-            return new DoacaoDAO(conexao);
+            return new DoadorDAO(conexao);
         }
     }
 
