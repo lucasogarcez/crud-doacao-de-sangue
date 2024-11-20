@@ -20,9 +20,25 @@ public class CadastroDoador {
         System.out.print("Digite o contato do doador: ");
         doador.setContato(s.nextLine());
         System.out.print("Digite o tipo sanguíneo do doador (A, B, AB, O, DESCONHECIDO): ");
-        doador.setTipoSanguineo(TipoSanguineo.valueOf(s.nextLine().toUpperCase()));
+        String tipo = s.nextLine().toUpperCase().trim();
+        TipoSanguineo tipoS;
+        try{
+            tipoS = TipoSanguineo.valueOf(tipo);
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Tipo sanguíneo inválido, definido como DESCONHECIDO");
+            tipoS = TipoSanguineo.DESCONHECIDO;
+        }
+        doador.setTipoSanguineo(tipoS);
         System.out.print("Digite o rh do doador (POSITIVO, NEGATIVO, DESCONHECIDO): ");
-        doador.setRh(RH.valueOf(s.nextLine().toUpperCase()));
+        String entradaRh = s.nextLine().toUpperCase().trim();
+        RH rh;
+        try{
+            rh = RH.valueOf(entradaRh);
+        } catch (IllegalArgumentException ex) {
+            System.out.println("RH inválido, definido como DESCONHECIDO");
+            rh = RH.DESCONHECIDO;
+        }
+        doador.setRh(rh);
 
         DAOFactory factory = new DAOFactory();
         try {

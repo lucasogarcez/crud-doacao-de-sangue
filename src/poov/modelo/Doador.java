@@ -12,13 +12,14 @@ public class Doador {
 
     public Doador() {}
 
-    public Doador(long codigo, String nome, String cpf, String contato, TipoSanguineo tipoSanguineo, RH rh) {
+    public Doador(long codigo, String nome, String cpf, String contato, TipoSanguineo tipoSanguineo, RH rh, Situacao situacao) {
         this.codigo = codigo;
         this.nome = nome;
         this.cpf = cpf;
         this.contato = contato;
         this.tipoSanguineo = tipoSanguineo;
         Rh = rh;
+        this.situacao = situacao;
     }
     
     public long getCodigo() {
