@@ -17,10 +17,11 @@ public class BuscaDoador {
             factory.abrirConexao();
             DoadorDAO dao = factory.criarDoadorDAO();
             Scanner s = new Scanner(System.in);
-            System.out.println("Pesquisa ");
+            System.out.println("MENU Pesquisar ");
             System.out.println("1 - Código");
             System.out.println("2 - Nome");
             System.out.println("3 - CPF");
+            System.out.println("4 - Voltar");
             System.out.print("Digite uma opção: ");
             int opcao = s.nextInt();
             switch (opcao) {
@@ -58,6 +59,9 @@ public class BuscaDoador {
                     } else {
                         System.out.println("Não foi encontrado nenhum doador com o cpf " + cpf);
                     }
+                    break;
+
+                case 4:
                     break;
 
                 default:
