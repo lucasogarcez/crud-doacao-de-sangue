@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,4 +79,26 @@ public class DoadorDAO {
 
         return doadores;
     }
+
+    public boolean alterarDoador(Doador doador) throws SQLException{
+        boolean resultado = false;
+        String sqlAlteracao = "UPDATE Doador SET nome = ?, cpf = ?, contato = ?, tipoERhCorretos = ?, tipoSanguineo = ?::TipoSanguineo, rh = ?::RH, situacao = ?::Situacao WHERE codigo = ?";
+        PreparedStatement pstmtAlteracao = conexao.prepareStatement(sqlAlteracao);
+        pstmtAlteracao.setString(1, doador.getNome());
+        pstmtAlteracao.setString(2, doador.getCpf());
+        pstmtAlteracao.setString(3, doador.getContato());
+        pstmtAlteracao.setBoolean(4, doador.isTipoERhCorretos());
+        pstmtAlteracao.setObject(5, doador.getTipoSanguineo().name());
+        pstmtAlteracao.setObject(6, doador.getRh().name());
+        pstmtAlteracao.setObject(7, doador.getSituacao().name());
+        pstmtAlteracao.setLong(8, doador.getCodigo());
+        int alteradas = pstmtAlteracao.executeUpdate();
+        if (alteradas == 1) {
+            resultado = true;
+        }
+        pstmtAlteracao.close();
+        return resultado;
+    }
+
+    
 }
