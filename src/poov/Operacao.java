@@ -13,7 +13,7 @@ import poov.modelo.dao.DoadorDAO;
 
 public class Operacao {
     
-    public void abaDoador(Scanner s) {
+    public void abaDoador(Scanner s) throws SQLException{
         String opcao;
         //acesso ao menu e assim por diante, reaproveitando os menus e utilizando eles como funções/métodos
         do {
@@ -41,6 +41,7 @@ public class Operacao {
                     break;
     
                 case "4":
+                    removerDoador(s);
                     break;
     
                 case "5":
@@ -57,7 +58,7 @@ public class Operacao {
 
     }
 
-    public static void cadastroDoador(Scanner s) {
+    public static void cadastroDoador(Scanner s) throws SQLException{
         Doador doador = new Doador();
         System.out.print("Digite o nome do doador: ");
         doador.setNome(s.nextLine());
@@ -100,7 +101,7 @@ public class Operacao {
         System.out.println(doador);
     }
 
-    public static List<Doador> buscaDoador(Scanner s) {
+    public static List<Doador> buscaDoador(Scanner s) throws SQLException{
         DAOFactory factory = new DAOFactory();
         try {
             factory.abrirConexao();
@@ -118,10 +119,10 @@ public class Operacao {
                 switch (opcao) {
                     case "1":
                         System.out.print("Digite o código do doador: ");
-                        s.nextLine();
                         Long codigo = s.nextLong();
+                        s.nextLine();
                         List<Doador> doador = dao.buscarDoador(codigo, null, null);
-                        if (doador != null) {
+                        if (!doador.isEmpty()) {
                             return doador;
                         } else {
                             System.out.println("Não foi encontrado nenhum doador com o código " + codigo);
@@ -130,7 +131,6 @@ public class Operacao {
                     
                     case "2":
                         System.out.print("Digite o nome do doador ou parte dele: ");
-                        s.nextLine();
                         String nome = s.nextLine();
                         List<Doador> doador2 = dao.buscarDoador(null, nome, null);
                         if (!doador2.isEmpty()) {
@@ -142,7 +142,6 @@ public class Operacao {
     
                     case "3":
                         System.out.print("Digite o cpf do doador ou parte dele: ");
-                        s.nextLine();
                         String cpf = s.nextLine();
                         List<Doador> doador3 = dao.buscarDoador(null, null, cpf);
                         if (!doador3.isEmpty()) {
@@ -168,7 +167,7 @@ public class Operacao {
         return null;
     }
 
-    public static void alterarDoador(Scanner s) {
+    public static void alterarDoador(Scanner s) throws SQLException{
         DAOFactory factory = new DAOFactory();
         try {
             factory.abrirConexao();
@@ -176,9 +175,10 @@ public class Operacao {
             
             System.out.print("Digite o código do doador a ser alterado: ");
             Long cod = s.nextLong();
+            s.nextLine();
             List<Doador> doadores = dao.buscarDoador(cod, null, null);
-            Doador doador = doadores.get(0);
-            if (doador != null) {
+            if (!doadores.isEmpty()) {
+                Doador doador = doadores.get(0);
                 String opcao;
                 do {
                     System.out.println("Alterar");
@@ -278,5 +278,31 @@ public class Operacao {
         }
     }
 
+    public void removerDoador(Scanner s) throws SQLException{
+        DAOFactory factory = new DAOFactory();
+        try {
+            factory.abrirConexao();
+            DoadorDAO dao = factory.criarDoadorDAO();
+            
+            System.out.print("Digite o código do doador a ser removido: ");
+            Long cod = s.nextLong();
+            s.nextLine();
+            List<Doador> doadores = dao.buscarDoador(cod, null, null);
+            if (!doadores.isEmpty()) {
+                Doador doador = doadores.get(0);
+                if (dao.removerDoador(doador)) {
+                    System.out.println("Remoção efetuada com sucesso");
+                } else {
+                    System.out.println("Problema ao remover o doador");
+                }
+            } else {
+                System.out.println("Não foi encontrado nenhum doador com o código " + cod);
+            }
+        } catch (SQLException ex) {
+            DAOFactory.mostrarSQLException(ex);
+        } finally {
+            factory.fecharConexao();
+        }
 
+    }
 }

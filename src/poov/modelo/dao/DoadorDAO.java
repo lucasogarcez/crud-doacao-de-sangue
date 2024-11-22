@@ -100,5 +100,15 @@ public class DoadorDAO {
         return resultado;
     }
 
-    
+    public boolean removerDoador(Doador doador) throws SQLException {
+        boolean resultado = false;
+        String sql = "UPDATE Doador SET situacao = 'INATIVO' WHERE codigo = ?";
+        PreparedStatement pstmt = conexao.prepareStatement(sql);
+        pstmt.setLong(1, doador.getCodigo());
+        int alteradas = pstmt.executeUpdate();
+        if (alteradas == 1)
+            resultado = true;
+        pstmt.close();
+        return resultado;
+    }
 }
