@@ -1,21 +1,26 @@
 package poov;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
+import poov.modelo.Doacao;
 import poov.modelo.Doador;
 import poov.modelo.RH;
 import poov.modelo.Situacao;
 import poov.modelo.TipoSanguineo;
 import poov.modelo.dao.DAOFactory;
+import poov.modelo.dao.DoacaoDAO;
 import poov.modelo.dao.DoadorDAO;
 
 public class Operacao {
     
     public void abaDoador(Scanner s) throws SQLException{
         String opcao;
-        //acesso ao menu e assim por diante, reaproveitando os menus e utilizando eles como funções/métodos
+
         do {
             System.out.println("Doador");
             System.out.println("1 - Cadastrar");
@@ -49,13 +54,42 @@ public class Operacao {
                 
                 default:
                     System.out.println("Opção inválida! Digite um dos valores indicados anteriormente: ");
-                    break;
             }
         }while(!opcao.equals("5"));
     }
 
-    public void abaDoacao(Scanner s) {
+    public void abaDoacao(Scanner s) throws SQLException{
+        String opcao;
 
+        do {
+            System.out.println("Doacao");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Pesquisar");
+            System.out.println("3 - Voltar");
+            System.out.print("Digite uma opção: ");
+            opcao = s.nextLine();
+
+            switch (opcao) {
+                case "1":
+                    cadastroDoacao(s);
+                    break;
+                
+                case "2":
+                    List<Doacao> doacao = pesquisarDoacao(s);
+                    if (doacao != null && !doacao.isEmpty())
+                        System.out.println(doacao);
+                    else
+                        System.out.println("Não foi encontrada nenhuma doação");
+                    break;
+
+                case "3":
+                    break;
+
+                default:
+                    System.out.println("Opção inválida! Digite um dos valores indicados anteriormente: ");
+            }
+
+        }while (!opcao.equals("3"));
     }
 
     public static void cadastroDoador(Scanner s) throws SQLException{
@@ -278,7 +312,7 @@ public class Operacao {
         }
     }
 
-    public void removerDoador(Scanner s) throws SQLException{
+    public static void removerDoador(Scanner s) throws SQLException{
         DAOFactory factory = new DAOFactory();
         try {
             factory.abrirConexao();
@@ -304,5 +338,192 @@ public class Operacao {
             factory.fecharConexao();
         }
 
+    }
+
+    public static void cadastroDoacao(Scanner s) {
+        DAOFactory factory = new DAOFactory();
+        try {
+            factory.abrirConexao();
+            DoacaoDAO dao = factory.criarDoacaoDAO();
+            DoadorDAO daoD = factory.criarDoadorDAO();
+        
+            Doacao doacao = new Doacao();
+            System.out.print("Digite o volume (ml) de sangue da doacao: ");
+            doacao.setVolume(s.nextDouble());
+            s.nextLine();
+            System.out.print("Digite o código do respectivo doador: ");
+            Long cod = s.nextLong();
+            s.nextLine();
+            List<Doador> doadores = daoD.buscarDoador(cod, null, null);
+            if (!doadores.isEmpty()) {
+                doacao.setDoador(doadores.get(0));
+                dao.cadastroDoacao(doacao);
+            } else {
+                System.out.println("Doador não disponível para a doação.");
+            }
+
+
+        } catch (SQLException ex) {
+            DAOFactory.mostrarSQLException(ex);
+        } finally {
+            factory.fecharConexao();
+        }
+    }
+
+    public static List<Doacao> pesquisarDoacao(Scanner s) throws SQLException {
+        DAOFactory factory = new DAOFactory();
+        try {
+            factory.abrirConexao();
+            DoacaoDAO daoD = factory.criarDoacaoDAO();
+            DoadorDAO dao = factory.criarDoadorDAO();
+            String opcao;
+
+            do{
+                System.out.println("Pesquisar ");
+                System.out.println("1 - Código do doador");
+                System.out.println("2 - Nome do doador"); 
+                System.out.println("3 - CPF do doador");
+                System.out.println("4 - Código da doação");
+                System.out.println("5 - Data da doação");
+                System.out.println("6 - Voltar");
+                System.out.print("Digite uma opção: ");
+                opcao = s.nextLine();
+                switch (opcao) {
+                    case "1":
+                        System.out.print("Digite o código do doador: ");
+                        Long codigo = s.nextLong();
+                        s.nextLine();
+                        List<Doador> doadores = dao.buscarDoador(codigo, null, null);
+                        if (!doadores.isEmpty()) {
+                            List<Doacao> doacoes = daoD.buscaDoacao(doadores, null);
+                            return doacoes;
+                        } else {
+                            System.out.println("Não foi encontrado nenhum doador com o código " + codigo);
+                        }
+                        break;
+                    
+                    case "2":
+                        System.out.print("Digite o nome do doador ou parte dele: ");
+                        String nome = s.nextLine();
+                        List<Doador> doadores2 = dao.buscarDoador(null, nome, null);
+                        if (!doadores2.isEmpty()) {
+                            List<Doacao> doacoes2 = daoD.buscaDoacao(doadores2, null);
+                            return doacoes2;
+                        } else {
+                            System.out.println("Não foi encontrado nenhum doador com o nome " + nome);
+                        }
+                        break;
+    
+                    case "3":
+                        System.out.print("Digite o cpf do doador ou parte dele: ");
+                        String cpf = s.nextLine();
+                        List<Doador> doadores3 = dao.buscarDoador(null, null, cpf);
+                        if (!doadores3.isEmpty()) {
+                            List<Doacao> doacoes3 = daoD.buscaDoacao(doadores3, null);
+                            return doacoes3;
+                        } else {
+                            System.out.println("Não foi encontrado nenhum doador com o cpf " + cpf);
+                        }
+                        break;
+    
+                    case "4":
+                        System.out.print("Digite o código da doação: ");
+                        Long codigo_doacao = s.nextLong();
+                        s.nextLine();
+                        List<Doacao> doacao4 = daoD.buscaDoacao(null, codigo_doacao);
+                        if (!doacao4.isEmpty()) {
+                            return doacao4;
+                        }else {
+                            System.out.println("Não foi encontrada nenhuma doação com o código " + codigo_doacao);
+                        }
+                        break;
+
+                    case "5":
+                        String opcao2;
+                        do {
+                            System.out.println("Pesquisa - Data");
+                            System.out.println("1 - Data inicial");
+                            System.out.println("2 - Intervalo de datas");
+                            System.out.println("3 - Data final");
+                            System.out.println("4 - Voltar");
+                            System.out.print("Digite uma opção: ");
+                            opcao2 = s.nextLine();
+                            
+                            List<Doacao> doacao;
+
+                            switch(opcao2) {
+                                case "1":
+                                    System.out.print("Digite uma data inicial no formato (dd/MM/yyyy): ");
+                                    String data = s.nextLine();
+                                    LocalDate dataInicial = null;
+                                    try {
+                                        dataInicial = LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                                    } catch (DateTimeParseException e) {
+                                        System.out.println("Formato de data inválido.");
+                                    }
+                                    doacao = daoD.buscaDoacaoData(dataInicial, null);
+                                    if (!doacao.isEmpty()) {
+                                        System.out.println(doacao);
+                                    } else {
+                                        System.out.println("Não foi encontrada nenhuma doação entre as datas " + dataInicial.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " e " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    }
+                                    break;
+                                case "2":
+                                    System.out.print("Digite uma data inicial no formato (dd/MM/yyyy): ");
+                                    String dataEntrada1 = s.nextLine();
+                                    System.out.print("Digite um data final no formato (dd/MM/yyyy): ");
+                                    String dataEntrada2 = s.nextLine();
+
+                                    LocalDate dataInicio = null;
+                                    LocalDate dataFinal = null;
+                                    try {
+                                        dataInicio = LocalDate.parse(dataEntrada1, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                                        dataFinal = LocalDate.parse(dataEntrada2, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                                    } catch (DateTimeParseException e) {
+                                        System.out.println("Formato de data inválido.");
+                                    }
+                                    doacao = daoD.buscaDoacaoData(dataInicio, dataFinal);
+                                    if (!doacao.isEmpty()) {
+                                        System.out.println(doacao);
+                                    } else {
+                                        System.out.println("Não foi encontrada nenhuma doação entre as datas " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " e " + dataFinal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    }
+                                    break;
+                                case "3":
+                                    System.out.print("Digite uma data inicial no formato (dd/MM/yyyy): ");
+                                    String dataF = s.nextLine();
+                                    LocalDate dataFim = null;
+                                    try {
+                                        dataFim = LocalDate.parse(dataF, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                                    } catch (DateTimeParseException e) {
+                                        System.out.println("Formato de data inválido.");
+                                    }
+                                    doacao = daoD.buscaDoacaoData(null, dataFim);
+                                    if (!doacao.isEmpty()) {
+                                        System.out.println(doacao);
+                                    } else {
+                                        System.out.println("Não foi encontrada nenhuma doação até a data de "  + dataFim.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                    }
+                                    break;
+                                case "4":
+                                    break;
+                            }
+                        }while (!opcao2.equals("4"));
+                        break;
+                    
+                    case "6":
+                        break;
+    
+                    default:
+                        System.out.print("Opção inválida! Digite um dos valores indicados anteriormente: ");
+                }
+            }while (!opcao.equals("6"));
+        } catch (SQLException ex) {
+            DAOFactory.mostrarSQLException(ex);
+        } finally {
+            factory.fecharConexao();
+        }
+
+        return null;
     }
 }

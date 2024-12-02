@@ -2,21 +2,23 @@ package poov.modelo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Doacao {
     private long codigo;
-    private LocalDate data;
-    private LocalTime hora;
+    private LocalDate data = LocalDate.now();
+    private LocalTime hora = LocalTime.now();
     private double volume;
     private Doador doador;
     private Situacao situacao;
+
+    public Doacao() {}
     
-    public Doacao(long codigo, double volume, Doador doador, Situacao situacao) {
+    public Doacao(long codigo, LocalDate data, LocalTime hora, double volume, Situacao situacao) {
         this.codigo = codigo;
-        this.data = LocalDate.now();
-        this.hora = LocalTime.now();
+        this.data = data;
+        this.hora = hora;
         this.volume = volume;
-        this.doador = doador;
         this.situacao = situacao;
     }
 
@@ -118,7 +120,8 @@ public class Doacao {
 
     @Override
     public String toString() {
-        return "Doacao [codigo=" + codigo + ", data=" + data + ", hora=" + hora + ", volume=" + volume + ", doador="
+        String dataFormatada = data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return "Doacao [codigo=" + codigo + ", data=" + dataFormatada + ", hora=" + hora + ", volume=" + volume + ", doador="
                 + doador + ", situacao=" + situacao + "]";
     }
 }
