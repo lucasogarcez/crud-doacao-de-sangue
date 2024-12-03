@@ -252,14 +252,17 @@ public class Operacao {
                             break;
                         
                         case "5":
-                            System.out.print("Digite o novo tipo sanguíneo do doador (A, B, AB, O, DESCONHECIDO): ");
+                            System.out.print("Digite o novo tipo sanguíneo do doador (A, B, AB, O): ");
                             String tipo = s.nextLine().toUpperCase().trim();
                             TipoSanguineo tipoS;
-                            try{
-                                tipoS = TipoSanguineo.valueOf(tipo);
-                            } catch (IllegalArgumentException ex) {
-                                System.out.println("Tipo sanguíneo inválido, definido como DESCONHECIDO");
-                                tipoS = TipoSanguineo.DESCONHECIDO;
+                            while (true) {
+                                try{
+                                    tipoS = TipoSanguineo.valueOf(tipo);
+                                    break;
+                                } catch (IllegalArgumentException ex) {
+                                    System.out.print("Tipo sanguíneo inválido. Insira uma opção válida (A, B, AB, O): ");
+                                    tipo = s.nextLine().toUpperCase().trim();
+                                }
                             }
                             doador.setTipoSanguineo(tipoS);
                             break;
@@ -296,6 +299,7 @@ public class Operacao {
                         default:
                             System.out.println("Opção inválida! Digite um dos valores indicados anteriormente: ");
                     }
+                    break;
                 }while (!opcao.equals("8"));
                 
                 if (dao.alterarDoador(doador)) {
