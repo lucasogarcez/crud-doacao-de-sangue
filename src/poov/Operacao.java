@@ -224,6 +224,7 @@ public class Operacao {
                     System.out.println("6 - RH");
                     System.out.println("7 - Situação");
                     System.out.println("8 - Voltar");
+                    System.out.print("Digite um opção: ");
                     opcao = s.nextLine();
         
                     switch (opcao) {
