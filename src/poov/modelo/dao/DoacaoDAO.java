@@ -52,6 +52,7 @@ public class DoacaoDAO {
 
             List<Doacao> doacoes = new ArrayList<>();
             Doacao doacao;
+            
             String sql = "SELECT * FROM Doacao WHERE situacao = 'ATIVO' ";
     
             if (doadores != null && !doadores.isEmpty()) {
@@ -128,7 +129,7 @@ public class DoacaoDAO {
     
             while (rs.next()) {
                 doacao = new Doacao(rs.getLong(1), rs.getDate(2).toLocalDate(), rs.getTime(3).toLocalTime(), rs.getDouble(4), Situacao.valueOf(rs.getString(6)));
-                doadores = dao.buscarDoador(rs.getLong(5), null, null);
+                doadores = dao.buscarDoador(rs.getLong(5), null, null, true);
                 doacao.setDoador(doadores.get(0));
                 doacoes.add(doacao);
             }

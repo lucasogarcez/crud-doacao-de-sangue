@@ -43,18 +43,38 @@ public class DoadorDAO {
     }
 
     public List<Doador> buscarDoador(Long codigo, String nome, String cpf) throws SQLException{
-        List<Doador> doadores = new ArrayList<>();
-        Doador doador; 
-        String sql = "SELECT * FROM Doador WHERE situacao = 'ATIVO'";
-
         if (codigo != null) {
-            sql += " AND codigo = ?";
+            return this.buscarDoador(codigo, null, null, false);
         }
         if (nome != null && !nome.isEmpty()) {
-            sql += " AND nome ILIKE ?";
+            return this.buscarDoador(null, nome, null, false);
         }
         if (cpf != null && !cpf.isEmpty()) {
-            sql += " AND cpf ILIKE ?";
+            return this.buscarDoador(null, null, cpf, false);
+        }
+        return null;
+    }
+    
+    public List<Doador> buscarDoador(Long codigo, String nome, String cpf, Boolean todosDoadores) throws SQLException{
+        List<Doador> doadores = new ArrayList<>();
+        Doador doador;
+        String sql;
+
+        if (todosDoadores) {
+            sql = "SELECT * FROM Doador WHERE";
+        } else {
+            sql = "SELECT * FROM Doador WHERE situacao = 'ATIVO' AND";
+        }
+
+
+        if (codigo != null) {
+            sql += " codigo = ?";
+        }
+        if (nome != null && !nome.isEmpty()) {
+            sql += " nome ILIKE ?";
+        }
+        if (cpf != null && !cpf.isEmpty()) {
+            sql += " cpf ILIKE ?";
         }
         
         PreparedStatement pstmt = conexao.prepareStatement(sql);

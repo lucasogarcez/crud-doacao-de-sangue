@@ -398,7 +398,7 @@ public class Operacao {
                         System.out.print("Digite o código do doador: ");
                         Long codigo = s.nextLong();
                         s.nextLine();
-                        List<Doador> doadores = dao.buscarDoador(codigo, null, null);
+                        List<Doador> doadores = dao.buscarDoador(codigo, null, null, true);
                         if (!doadores.isEmpty()) {
                             List<Doacao> doacoes = daoD.buscaDoacao(doadores, null);
                             return doacoes;
@@ -410,7 +410,7 @@ public class Operacao {
                     case "2":
                         System.out.print("Digite o nome do doador ou parte dele: ");
                         String nome = s.nextLine();
-                        List<Doador> doadores2 = dao.buscarDoador(null, nome, null);
+                        List<Doador> doadores2 = dao.buscarDoador(null, nome, null, true);
                         if (!doadores2.isEmpty()) {
                             List<Doacao> doacoes2 = daoD.buscaDoacao(doadores2, null);
                             return doacoes2;
@@ -422,7 +422,7 @@ public class Operacao {
                     case "3":
                         System.out.print("Digite o cpf do doador ou parte dele: ");
                         String cpf = s.nextLine();
-                        List<Doador> doadores3 = dao.buscarDoador(null, null, cpf);
+                        List<Doador> doadores3 = dao.buscarDoador(null, null, cpf, true);
                         if (!doadores3.isEmpty()) {
                             List<Doacao> doacoes3 = daoD.buscaDoacao(doadores3, null);
                             return doacoes3;
