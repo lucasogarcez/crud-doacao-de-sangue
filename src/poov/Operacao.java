@@ -458,11 +458,14 @@ public class Operacao {
                     case "5":
                         String opcao2;
                         do {
-                            System.out.println("Pesquisa - Data");
+                            System.out.println("\n===========================");
+                            System.out.println("PESQUISAR DOAÇÃO - POR DATA       ");
+                            System.out.println("===========================");
                             System.out.println("1 - Data inicial");
                             System.out.println("2 - Intervalo de datas");
                             System.out.println("3 - Data final");
                             System.out.println("4 - Voltar");
+                            System.out.println("===========================");
                             System.out.print("Digite uma opção: ");
                             opcao2 = s.nextLine();
                             
@@ -499,11 +502,15 @@ public class Operacao {
                                     } catch (DateTimeParseException e) {
                                         System.out.println("Formato de data inválido.");
                                     }
-                                    doacao = daoD.buscaDoacaoData(dataInicio, dataFinal);
-                                    if (!doacao.isEmpty()) {
-                                        System.out.println(doacao);
+                                    if (dataInicio.isBefore(dataFinal) || dataInicio.isEqual(dataFinal)) {
+                                        doacao = daoD.buscaDoacaoData(dataInicio, dataFinal);
+                                        if (!doacao.isEmpty()) {
+                                            System.out.println(doacao);
+                                        } else {
+                                            System.out.println("Não foi encontrada nenhuma doação entre as datas " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " e " + dataFinal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                        }
                                     } else {
-                                        System.out.println("Não foi encontrada nenhuma doação entre as datas " + dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " e " + dataFinal.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                        System.out.println("Inserção inválida de datas!");
                                     }
                                     break;
                                 case "3":
