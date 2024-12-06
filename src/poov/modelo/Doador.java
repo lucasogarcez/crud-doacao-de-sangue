@@ -75,9 +75,13 @@ public class Doador {
     
     @Override
     public String toString() {
-        return "Doador [codigo=" + codigo + ", nome=" + nome + ", cpf=" + cpf + ", contato=" + contato
-                + ", tipoERhCorretos=" + tipoERhCorretos + ", tipoSanguineo=" + tipoSanguineo + ", Rh=" + Rh
-                + ", situacao=" + situacao + "]";
+        return "Código do Doador: " + codigo + "\n" +
+                "Nome: " + nome + "\n" +
+                "CPF: " + cpf + "\n" +
+                "Contato: " + contato + "\n" +
+                "Tipo Sanguíneo: " + tipoSanguineo + " " + Rh + "\n" +
+                "Tipo e RH Corretos: " + (tipoERhCorretos ? "Sim" : "Não") + "\n" +
+                "Situação: " + situacao;
     }
 
     @Override

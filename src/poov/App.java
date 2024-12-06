@@ -9,10 +9,13 @@ public class App {
         String opcao;
 
         do {
-            System.out.println("MENU PRINCIPAL");
+            System.out.println("\n===========================");
+            System.out.println("       MENU PRINCIPAL      ");
+            System.out.println("===========================");
             System.out.println("1 - Doador");
             System.out.println("2 - Doação");
             System.out.println("3 - Sair");
+            System.out.println("===========================");
             System.out.print("Digite uma opção: ");
             opcao = s.nextLine();
 

@@ -121,7 +121,17 @@ public class Doacao {
     @Override
     public String toString() {
         String dataFormatada = data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        return "Doacao [codigo=" + codigo + ", data=" + dataFormatada + ", hora=" + hora + ", volume=" + volume + ", doador="
-                + doador + ", situacao=" + situacao + "]";
+        return  "\n=================================\n" +
+                "         DETALHES DA DOAÇÃO      \n" +
+                "=================================\n" +
+                "Código da Doação: " + codigo + "\n" +
+                "Data: " + dataFormatada + "\n" +
+                "Hora: " + hora + "\n" +
+                "Volume: " + volume + " mL\n" +
+                "Situação: " + situacao + "\n" +
+                "---------------------------------\n" +
+                "         INFORMAÇÕES DO DOADOR   \n" +
+                doador.toString() + "\n" +
+                "=================================";
     }
 }

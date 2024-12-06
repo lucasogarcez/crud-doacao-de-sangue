@@ -22,12 +22,15 @@ public class Operacao {
         String opcao;
 
         do {
-            System.out.println("Doador");
+            System.out.println("\n===========================");
+            System.out.println("          DOADOR           ");
+            System.out.println("===========================");
             System.out.println("1 - Cadastrar");
             System.out.println("2 - Pesquisar");
             System.out.println("3 - Alterar");
             System.out.println("4 - Remover");
             System.out.println("5 - Voltar");
+            System.out.println("===========================");
             System.out.print("Digite uma opção: ");
             opcao = s.nextLine();
                 
@@ -62,10 +65,13 @@ public class Operacao {
         String opcao;
 
         do {
-            System.out.println("Doacao");
+            System.out.println("\n===========================");
+            System.out.println("          DOAÇÃO           ");
+            System.out.println("===========================");
             System.out.println("1 - Cadastrar");
             System.out.println("2 - Pesquisar");
             System.out.println("3 - Voltar");
+            System.out.println("===========================");
             System.out.print("Digite uma opção: ");
             opcao = s.nextLine();
 
@@ -143,11 +149,14 @@ public class Operacao {
             String opcao;
 
             do{
-                System.out.println("Pesquisar ");
+                System.out.println("\n===========================");
+                System.out.println("         PESQUISAR         ");
+                System.out.println("===========================");
                 System.out.println("1 - Código");
                 System.out.println("2 - Nome");
                 System.out.println("3 - CPF");
                 System.out.println("4 - Voltar");
+                System.out.println("===========================");
                 System.out.print("Digite uma opção: ");
                 opcao = s.nextLine();
                 switch (opcao) {
@@ -384,13 +393,16 @@ public class Operacao {
             String opcao;
 
             do{
-                System.out.println("Pesquisar ");
+                System.out.println("\n===========================");
+                System.out.println("     PESQUISAR DOAÇÃO       ");
+                System.out.println("===========================");
                 System.out.println("1 - Código do doador");
-                System.out.println("2 - Nome do doador"); 
+                System.out.println("2 - Nome do doador");
                 System.out.println("3 - CPF do doador");
                 System.out.println("4 - Código da doação");
                 System.out.println("5 - Data da doação");
                 System.out.println("6 - Voltar");
+                System.out.println("===========================");
                 System.out.print("Digite uma opção: ");
                 opcao = s.nextLine();
                 switch (opcao) {
