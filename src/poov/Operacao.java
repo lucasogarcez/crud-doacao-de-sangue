@@ -2,6 +2,7 @@ package poov;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -368,6 +369,10 @@ public class Operacao {
             System.out.print("Digite o código do respectivo doador: ");
             Long cod = s.nextLong();
             s.nextLine();
+            System.out.print("Digite a data da doação (dd/MM/yyyy): ");
+            doacao.setData(LocalDate.parse(s.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            System.out.print("Digite a hora da doação (HH:mm): ");
+            doacao.setHora(LocalTime.parse(s.nextLine(), DateTimeFormatter.ofPattern("HH:mm")));
             List<Doador> doadores = daoD.buscarDoador(cod, null, null);
             if (!doadores.isEmpty()) {
                 doacao.setDoador(doadores.get(0));
